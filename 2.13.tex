@@ -1,0 +1,46 @@
+\documentclass{report}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{cancel}
+
+
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+
+ \newcommand{\?}{\stackrel{?}{=}}
+  \newcommand{\<}{\stackrel{?}{<}}
+
+\begin{document}
+\section*{2.13}
+
+
+If
+$(c_{prod}, p_{prod}) = (c_1, p_1) \times (c_2, p_2)$
+and
+$c_1, p_1, c_2, p_2 > 0$,\\
+
+\begin{align}
+ (\operatorname{lower-bound}_{prod}, \operatorname{upper-bound}_{prod}) &= ((c_1 - (c_1p_1))(c_2 - (c_2p_2)), (c_1 + (c_1p_1))(c_2 + (c_2p_2))\\
+ (\operatorname{lower-bound}_{prod}, \operatorname{upper-bound}_{prod}) &= ((c_1c_2(1 - p_1)(1 - p_2), c_1c_2(1 + p_1)(1 + p_2))\\
+ \\
+  c_{prod} &= \frac{1}{2}(c_1c_2(1-p_1)(1-p_2) + c_1c_2(1+p_1)(1+p_2))\\
+ c_{prod} &= \frac{c_1c_2}{2}((1-p_1)(1-p_2) + (1+p_1)(1+p_2))\\
+ c_{prod} &= \frac{c_1c_2}{2}(1 - p_1 - p_2 + p_1p_2 + 1 + p_1 + p_2 + p_1p_2)\\
+ c_{prod} &= \frac{c_1c_2}{2}(2 +  2p_1p_2)\\
+ c_{prod} &= c_1c_2(1 +  p_1p_2)\\
+ \\
+ p_{prod} &= \frac{\operatorname{upper-bound}_{prod} - c_{prod}}{c_{prod}}\\
+ p_{prod} &= \frac{c_1c_2(1 + p_1)(1 + p_2) - c_1c_2(1 +  p_1p_2)}{c_1c_2(1 +  p_1p_2)}\\
+ p_{prod} &= \frac{(1 + p_1)(1 + p_2) - (1 +  p_1p_2)}{1 +  p_1p_2}\\
+ p_{prod} &= \frac{1 + p_1 + p_2 + p_1p_2 - 1 -  p_1p_2}{1 +  p_1p_2}\\
+ p_{prod} &= \frac{p_1 + p_2}{1 + p_1p_2}
+\end{align}\\
+
+For small values of $p_1$ and $p_2$, $\cancelto{0}{p_1p_2}$.\\
+$\therefore p_{prod} \approx p_1 + p_2$.
+
+\end{document}

@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{forest}
+\begin{document}
+
+Given an alphabet of $n$ symbols, where the relative frequencies of the
+symbols are $1, 2, 4, ..., 2^{n-1}$, trees of the following form are produced:
+\\
+\\
+For $n = 5$:\\
+\\
+\begin{forest}
+[('($c_1$ $c_2$ $c_3$ $c_4$ $c_5$) 31)
+  [($c_5$ 16)]
+  [('($c_1$ $c_2$ $c_3$ $c_4$) 15)
+    [($c_4$ 8)]
+    [('($c_1$ $c_2$ $c_3$) 7)
+	 	  [($c_3$ 4)]
+		  [('($c_1$ $c_2$) 3)
+		    [($c_2$ 2)]
+		    [($c_1$ 1)]
+      ]
+    ]
+  ]
+]
+\end{forest}
+\\
+\\
+For $n = 10$:\\
+\\
+\begin{forest}
+[('($c_1$ $c_2$ $c_3$ $c_4$ $c_5$ $c_6$ $c_7$ $c_8$ $c_9$ $c_{10}$) 1023)
+  [(J 512)]
+  [('($c_1$ $c_2$ $c_3$ $c_4$ $c_5$ $c_6$ $c_7$ $c_8$ $c_9$) 511)
+    [(I 256)]
+    [('($c_1$ $c_2$ $c_3$ $c_4$ $c_5$ $c_6$ $c_7$ $c_8$) 255)
+      [($c_8$ 128)]
+      [('($c_1$ $c_2$ $c_3$ $c_4$ $c_5$ $c_6$ $c_7$) 127)
+        [($c_7$ 64)]
+        [('($c_1$ $c_2$ $c_3$ $c_4$ $c_5$ $c_6$) 63)
+          [($c_6$ 32)]
+          [('($c_1$ $c_2$ $c_3$ $c_4$ $c_5$) 31)
+            [($c_5$ 16)]
+            [('($c_1$ $c_2$ $c_3$ $c_4$) 15)
+              [($c_4$ 8)]
+              [('($c_1$ $c_2$ $c_3$) 7)
+                [($c_3$ 4)]
+                [('($c_1$ $c_2$)  3)
+                  [($c_2$ 2)]
+                  [($c_1$ 1)]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
+]
+\end{forest}
+\\
+\\
+In a tree of this form, 1 bit is required to encode the most frequent symbol and $n-1$ bits are required to encode the least frequent symbol.
+\end{document}

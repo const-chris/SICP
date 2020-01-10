@@ -1,0 +1,122 @@
+\documentclass{report}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[margin=1in]{geometry}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+
+ \newcommand{\?}{\stackrel{?}{=}}
+  \newcommand{\<}{\stackrel{?}{<}}
+
+\begin{document}
+\section*{2.9}
+
+\begin{align}
+i_1 &= (a, b)\\
+i_2 &= (c, d)\\
+\\
+w_{i_1} &= \frac{1}{2}(b-a)\\
+w_{i_2} &= \frac{1}{2}(d-c)\\
+\end{align}\\*
+To show that the width of the sum of two intervals is a function of widths of the two intervals:
+\begin{align}
+i_1+i_2 &= (a+c, b+d)\\
+w_{i_1+i_2} &= \frac{1}{2}(b+d - (a+c))\\
+\\
+w_{i_1} + w_{i_2} &= \frac{1}{2}(b-a) + \frac{1}{2}(d-c)\\
+w_{i_1} + w_{i_2} &= \frac{1}{2}(b-a + d-c)\\
+w_{i_1} + w_{i_2} &= \frac{1}{2}(b + d - a -c)\\
+w_{i_1} + w_{i_2} &= \frac{1}{2}(b+ d -(a+c))\\
+\therefore w_{i_1} + w_{i_2} &= w_{i_1+i_2} \:\:\; \checkmark\\
+\end{align}\\
+Similarly, for the difference of two intervals:
+\begin{align}
+i_1-i_2 &= (a-d, b-c)\\
+w_{i_1-i_2} &= \frac{1}{2}(b-c - (a-d))\\
+w_{i_1-i_2} &= \frac{1}{2}(b-c - a+d))\\
+w_{i_1-i_2} &= \frac{1}{2}(b+d - (a+c))\\
+\therefore w_{i_1} + w_{i_2} &= w_{i_1-i_2} \:\:\; \checkmark\\
+\end{align}\\*
+\pagebreak
+
+To show that the width of the product of two intervals is not a function of the widths of the two intervals alone:
+\begin{align}
+i_1 &= (0.25, 0.75)\\
+i_2 &= (1, 2)\\
+w_{i_1} &= \frac{1}{2}(0.75-0.25) = 0.25\\
+w_{i_2} &= \frac{1}{2}(2-1)=0.5\\
+\\
+i_3 &= (1, 1.5)\\
+i_4 &= (1, 2)\\
+w_{i_3} &= \frac{1}{2}(1.5-1) = 0.25\\
+w_{i_4} &= \frac{1}{2}(2-1)=0.5\\
+\end{align}
+
+Here we have two pairs of intervals with the same widths. However:
+\begin{align}
+i_1\times i_2 &= (min(p_1, p_2, p_3, p_4), max(p_1, p_2, p_3, p_4))\\
+where:\\
+p_1 &= (0.25)(1) = 0.25\\
+p_2 &= (0.25)(2) = 0.5\\
+p_3 &= (0.75)(1) = 0.75\\
+p_4 &= (0.75)(2) = 1.5\\
+\\
+i_1\times i_2 &= (0.25, 1.5)\\
+w_{i_1\times i_2} &= \frac{1}{2}(1.5 - 0.25)\\
+w_{i_1\times i_2} &= 0.625\\
+\\
+i_3\times i_4 &= (min(p_1, p_2, p_3, p_4), max(p_1, p_2, p_3, p_4))\\
+where:\\
+p_1 &= (1)(1) = 1\\
+p_2 &= (1)(2) = 2\\
+p_3 &= (1.5)(1) = 1.5\\
+p_4 &= (1.5)(2) = 3\\
+\\
+i_1\times i_2 &= (1, 3)\\
+w_{i_3\times i_4} &= \frac{1}{2}(3 - 1)\\
+w_{i_3\times i_4} &= 1\\
+\\
+w_{i_1\times i_2} &\neq w_{i_3\times i_4}\\
+\end{align}\\
+$\therefore$ the width of the product of two intervals cannot be a function of only the widths of the two intervals.
+\pagebreak
+
+We can use the same two pairs of intervals to show that the width of the quotient of two intervals is not a function of the widths of the two intervals alone:
+\begin{align}
+\frac{i_1}{i_2} &= i_1\times i_2'\\
+where:\\
+i_2' &=  \left(\frac{1}{(\operatorname{upper-bound} i_2)}, \frac{1}{(\operatorname{lower-bound} i_2)}\right)\\
+i_2' &=  \left(\frac{1}{2}, \frac{1}{1}\right) = (0.5, 1)\\
+\\
+i_1\times i_2' &= (min(p_1, p_2, p_3, p_4), max(p_1, p_2, p_3, p_4))\\
+where:\\
+p_1 &= (0.25)(0.5) = 0.125\\
+p_2 &= (0.25)(1) = 0.25\\
+p_3 &= (0.75)(0.5) = 0.375\\
+p_4 &= (0.75)(1) = 0.75\\
+\\
+i_1\times i_2' &= (0.125, 0.75)= \frac{i_1}{i_2}\\
+w_{i_1/ i_2} &= \frac{1}{2}(0.75 - 0.125) = 0.3125\\
+\\
+\frac{i_3}{i_4} &= i_1\times i_4'\\
+where:\\
+i_4' &=  \left(\frac{1}{(\operatorname{upper-bound} i_2)}, \frac{1}{(\operatorname{lower-bound} i_2)}\right)\\
+i_4' &=  \left(\frac{1}{2}, \frac{1}{1}\right) = (0.5, 1)\\
+\\
+i_3\times i_4' &= (min(p_1, p_2, p_3, p_4), max(p_1, p_2, p_3, p_4))\\
+where:\\
+p_1 &= (1)(0.5) = 0.5\\
+p_2 &= (1)(1) = 1\\
+p_3 &= (1.5)(0.5) = 0.75\\
+p_4 &= (1.5)(1) = 1.5\\
+\\
+i_3\times i_4' &= (0.5, 1.5) = \frac{i_3}{i_4}\\
+w_{i_3/ i_4} &= \frac{1}{2}(1.5 - 0.5) = 0.5\\
+\\
+w_{i_1/i_2} &\neq w_{i_3/i_4}\\
+\end{align}\\
+$\therefore$ the width of the quotient of two intervals cannot be a function of only the widths of the two intervals.
+
+\end{document}

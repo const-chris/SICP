@@ -1,0 +1,76 @@
+\documentclass{report}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[margin=1in]{geometry}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+
+ \newcommand{\?}{\stackrel{?}{=}}
+  \newcommand{\<}{\stackrel{?}{<}}
+
+\begin{document}
+\section*{1.13}
+First show that $Fib(n) = \displaystyle\frac{\phi^n - \psi^n}{\sqrt{5}}$, where $\phi = \displaystyle\frac{1 + \sqrt{5}}{2}$ and $\psi = \displaystyle\frac{1 - \sqrt{5}}{2}$\\
+
+For $n = 0$:
+\begin{align}
+Fib(0) &\? \frac{(\frac{1 + \sqrt{5}}{2})^0 - (\frac{1 - \sqrt{5}}{2})^0}{\sqrt{5}}\\
+0 &\? \frac{1 - 1}{\sqrt{5}}\\
+0 &= 0 \;\;\; \checkmark
+\end{align}\\
+
+For $n = 1$:
+\begin{align}
+Fib(1) &\? \frac{(\frac{1 + \sqrt{5}}{2})^1 - (\frac{1 - \sqrt{5}}{2})^1}{\sqrt{5}}\\
+1 &\? \frac{\frac{1 + \sqrt{5}}{2} - \frac{1 - \sqrt{5}}{2}}{\sqrt{5}}\\
+\sqrt{5} &\? \frac{1 + \sqrt{5}}{2} - \frac{1 - \sqrt{5}}{2}\\
+2\sqrt{5} &\? 1 + \sqrt{5} - (1 - \sqrt{5})\\
+2\sqrt{5} &= 2\sqrt{5}  \;\;\; \checkmark
+\end{align}\\
+
+Assume it holds for $n = k$:
+\begin{align}
+Fib(k) &= \frac{\phi^k - \psi^k}{\sqrt{5}}
+\end{align}\\
+
+Assume it also holds for $n = k + 1$:
+\begin{align}
+Fib(k + 1) &= \frac{\phi^{k + 1} - \psi^{k + 1}}{\sqrt{5}}
+\end{align}\\
+
+Then for $n = k + 2$:
+\begin{align}
+Fib(k + 2) &\? \frac{\phi^{k + 2} - \psi^{k + 2}}{\sqrt{5}}\\
+Fib(k + 1) + Fib(k) &\? \frac{\phi^{k + 2} - \psi^{k + 2}}{\sqrt{5}}\\
+\frac{\phi^{k + 1} - \psi^{k + 1}}{\sqrt{5}} + \frac{\phi^k - \psi^k}{\sqrt{5}} &\? \frac{\phi^{k + 2} - \psi^{k + 2}}{\sqrt{5}}\\
+\phi^{k + 1} - \psi^{k + 1} + \phi^k - \psi^k &\? \phi^{k + 2} - \psi^{k + 2}\\
+\phi\phi^k - \psi\psi^k + \phi^k - \psi^k &\? \phi^2\phi^k - \psi^2\psi^k\\
+\psi^2\psi^k - \psi\psi^k - \psi^k &\? \phi^2\phi^k -\phi\phi^k - \phi^k\\
+(\psi^2 - \psi - 1)\psi^k &\? (\phi^2 - \phi - 1)\phi^k\\
+\left[\left(\frac{1 - \sqrt{5}}{2}\right)^2 - \frac{1 - \sqrt{5}}{2} - 1\right]\psi^k &\? \left[\left(\frac{1 + \sqrt{5}}{2}\right)^2 - \frac{1 + \sqrt{5}}{2} - 1\right]\phi^k\\
+\left(\frac{1 - 2\sqrt{5} + 5}{4} - \frac{1 - \sqrt{5}}{2} - 1\right)\psi^k &\? \left(\frac{1 + 2\sqrt{5} + 5}{4} - \frac{1 + \sqrt{5}}{2} - 1\right)\phi^k\\
+\left(\frac{1 - 2\sqrt{5} + 5 - (2 - 2\sqrt{5}) - 4}{4}\right)\psi^k &\? \left(\frac{1 + 2\sqrt{5} + 5 - (2 + 2\sqrt{5}) - 4}{4}\right)\phi^k\\
+\left(\frac{0}{4}\right)\psi^k &\? \left(\frac{0}{4}\right)\phi^k\\
+0 &= 0 \;\;\; \checkmark
+\end{align}
+
+$\therefore$ by induction it holds $\forall$ $n$.\\
+\\
+Next, show that $\forall$ $n$, $\displaystyle \abs*{\frac{\phi^n - \psi^n}{\sqrt{5}} - \frac{\phi^n}{\sqrt{5}}} < \frac{1}{2}$\\
+
+\begin{align}
+\abs*{\frac{\phi^n - \psi^n}{\sqrt{5}} - \frac{\phi^n}{\sqrt{5}}} &\< \frac{1}{2}\\
+\abs*{\frac{ -\psi^n}{\sqrt{5}}} &\< \frac{1}{2}\\
+\abs*{-\psi}^n &\< \frac{\sqrt{5}}{2}\\
+\abs*{\frac{\sqrt{5} - 1}{2}}^n &\< \frac{\sqrt{5}}{2}\\
+\end{align}
+
+Since $\displaystyle \frac{\sqrt{5} - 1}{2} < 1 < \frac{\sqrt{5}}{2}$ ,  $\forall \; n \in \mathbb{Z}_{\geq0}$:\\
+\begin{align}
+\left(\frac{\sqrt{5} - 1}{2}\right)^n &< \frac{\sqrt{5}}{2}  \;\;\; \checkmark
+\end{align}
+$\therefore$ $Fib(n)$ is the closest integer to $\displaystyle \frac{\psi^n}{ \sqrt{5}}$, $\forall$ $n$ in the domain of $Fib(n)$
+
+\end{document}
