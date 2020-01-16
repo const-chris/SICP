@@ -1,10 +1,9 @@
-#lang racket
-(require "../utils/mutable-pairs.rkt")
-(require "../queue.rkt")
-(provide after-delay
-         propagate
-         current-time
-         the-agenda)
+#lang sicp
+(#%require (file "../queue.rkt"))
+(#%provide after-delay
+           propagate
+           current-time
+           the-agenda)
 
 
 (define (after-delay delay action)

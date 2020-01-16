@@ -1,13 +1,9 @@
-#lang racket
-(require "utils/mutable-pairs.rkt")
-
-(provide make-queue
-         front-queue
-         empty-queue?
-         insert-queue!
-         delete-queue!)
-
-
+#lang sicp
+(#%provide make-queue
+           front-queue
+           empty-queue?
+           insert-queue!
+           delete-queue!)
 
 
 (define (make-queue)

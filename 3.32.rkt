@@ -1,4 +1,4 @@
-#lang racket
+#lang sicp
 #|
 The procedures (actions) in each time segment in the agenda must be processed in the order in which they were
 added to the agenda in order to track the state changes encapsulated by the action procedures that generated
@@ -30,12 +30,11 @@ its ugly head.
 |#
 
 
-(require "utils/mutable-pairs.rkt")
-(require "stack.rkt")
-(provide after-delay
-         propagate
-         current-time
-         the-agenda)
+(#%require (file "stack.rkt"))
+(#%provide after-delay
+           propagate
+           current-time
+           the-agenda)
 
 
 (define (after-delay delay action)
