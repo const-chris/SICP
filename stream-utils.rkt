@@ -9,6 +9,12 @@
 
 (define (display-line x) (newline) (display x))
 
+(define (stream-take n xs)
+  (if (= 0 n)
+      '()
+      (cons (stream-car xs)
+            (stream-take (- n 1) (stream-cdr xs)))))
+
 (define (stream-ref s n)
   (if (= n 0)
       (stream-car s)
