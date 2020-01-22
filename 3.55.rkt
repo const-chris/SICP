@@ -1,5 +1,6 @@
 #lang sicp
 (#%require (file "stream-utils.rkt"))
+(#%provide partial-sums)
 
 (define (partial-sums s)
   (cons-stream (stream-car s)
@@ -7,4 +8,6 @@
 
 
 ;; test
+#|
 (stream-take 10 (partial-sums integers))
+;|#
