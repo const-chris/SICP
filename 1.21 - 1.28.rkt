@@ -6,7 +6,7 @@
 (define (divides? x y)
   (= (remainder y x) 0))
 
-(define (smallest-divisor n)  
+(define (smallest-divisor n)
   (define (find-divisor test-divisor)
     (cond ((> (square test-divisor) n) n)
           ((divides? test-divisor n) test-divisor)
@@ -33,7 +33,7 @@
       (report-prime n (- (runtime) start-time))
       0))
 
-(define (report-prime n elapsed-time) 
+(define (report-prime n elapsed-time)
   (display n)
   (display " *** ")
   (display elapsed-time)
@@ -62,9 +62,9 @@
 (define (smallest-divisor-2 n)
   (define (find-divisor test-divisor)
     (let ((next
-           (if (= test-divisor 2)
-               3
-               (+ test-divisor 2))))
+            (if (= test-divisor 2)
+                3
+                (+ test-divisor 2))))
       (cond ((> (square test-divisor) n) n)
             ((divides? test-divisor n) test-divisor)
             (else (find-divisor next)))))
@@ -107,7 +107,7 @@
         ((even? exp)
          (remainder (square (expmod base (/ exp 2) m)) m))
         (else
-         (remainder (* base (expmod base (- exp 1) m)) m))))
+          (remainder (* base (expmod base (- exp 1) m)) m))))
 
 (define (fermat-test n)
   (define (try-it a)
@@ -180,9 +180,9 @@
                        (louis-expmod base (/ exp 2) m))
                     m))
         (else
-         (remainder (* base
-                       (louis-expmod base (- exp 1) m))
-                    m))))
+          (remainder (* base
+                        (louis-expmod base (- exp 1) m))
+                     m))))
 
 (louis-expmod 4 4 5)
 ; This defeats the purpose of reducing the exponent by half when it is even, since every time we do that, we make two recursive calls to expmod.
@@ -224,13 +224,13 @@
                  0
                  (remainder (square x) n))))
           (else
-           (remainder (* base (expmodn base (- exp 1))) n))))
+            (remainder (* base (expmodn base (- exp 1))) n))))
   (define (test a)
     (cond ((> a (/ n 2)) true)       
           ((not (= (expmodn a (- n 1)) 1)) false)
           (else (test (+ 1 a)))))
   (test 1))
-  
+
 (miller-rabin-test 1729)
 (miller-rabin-test 1019)
 (miller-rabin-test 5)
