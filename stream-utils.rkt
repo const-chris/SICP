@@ -12,6 +12,11 @@
 (define ones (cons-stream 1 ones))
 (define integers (cons-stream 1 (add-streams integers ones)))
 
+(define (make-stream . xs)
+  (if (null? xs)
+      '()
+      (cons-stream (car xs) (apply make-stream (cdr xs)))))
+
 (define (stream-take n xs)
   (if (= 0 n)
       '()

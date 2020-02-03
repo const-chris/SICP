@@ -3,11 +3,6 @@
 (#%provide sense-data sign-change-detector)
 
 ;; sample-data
-(define (make-stream . xs)
-  (if (null? xs)
-      '()
-      (cons-stream (car xs) (apply make-stream (cdr xs)))))
-
 (define sense-data (make-stream 1 2 1.5 1 0.5 -0.1 -2 -3 -2 -0.5 0.2 3 4))
 
 
