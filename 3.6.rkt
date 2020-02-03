@@ -1,10 +1,5 @@
 #lang racket
 
-(define (rand-update x)
-  (let ((a 3)
-        (b 17)
-        (m (expt 2 35)))
-    (remainder (+ (* a x) b) m)))
 
 (define rand
   (let ((x 3))
