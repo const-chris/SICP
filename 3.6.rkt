@@ -1,4 +1,7 @@
-#lang racket
+#lang sicp
+(#%require (file "utils/rand-update.rkt"))
+
+
 
 
 (define rand
@@ -23,6 +26,7 @@
       '()
       (cons (rand 'generate) (rng (- n 1)))))
 
+
 (display "(rng 5): ")
 (rng 5)
 
@@ -42,5 +46,4 @@
 
 
 ;(rand 'fluffy)
-
 (newline)

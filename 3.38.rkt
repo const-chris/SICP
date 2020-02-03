@@ -1,4 +1,4 @@
-#lang racket
+#lang sicp
 
 ;; a
 (display "Peter -> Paul -> Mary: ")

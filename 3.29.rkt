@@ -1,5 +1,9 @@
-#lang racket
-;; REVISIT -- import/implement primitives and test
+#lang sicp
+(#%require (file "circuit/wires.rkt"))
+(#%require (file "circuit/agenda.rkt"))
+
+(define inverter-delay 2)
+(define and-gate-delay 3)
 
 (define (inverter input output)
   (define (invert-input)

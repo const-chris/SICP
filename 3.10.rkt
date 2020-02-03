@@ -1,4 +1,4 @@
-#lang racket
+#lang sicp
 
 #|
 (define (make-withdraw initial-amount)

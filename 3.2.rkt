@@ -1,5 +1,5 @@
-#lang racket
-(require "utils/square.rkt")
+#lang sicp
+(#%require (file "utils/square.rkt"))
 (newline)
 
 (define (make-monitored f)
@@ -10,8 +10,8 @@
              "counter reset")
             ((eq? x 'how-many-calls?) count)
             (else
-             (set! count (+ count 1))
-             (f x))))))
+              (set! count (+ count 1))
+              (f x))))))
 
 (define S1 (make-monitored square))
 (define S2 (make-monitored square))

@@ -1,4 +1,4 @@
-#lang racket
+#lang sicp
 #|
 If exchange procedures run sequentially, we can treat each one as an
 atom--that is, as a pure function of two arguments which returns a pair

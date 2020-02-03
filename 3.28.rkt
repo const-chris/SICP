@@ -1,7 +1,10 @@
-#lang racket
-;; REVIST -- import/create primitives and test
+#lang sicp
+(#%require (file "circuit/wires.rkt"))
+(#%require (file "circuit/agenda.rkt"))
 
-#|
+
+(define or-gate-delay 5)
+
 (define (or-gate a1 a2 output)
   (define (or-action-procedure)
     (let ((new-value
@@ -12,7 +15,6 @@
   (add-action! a1 or-action-procedure)
   (add-action! a2 or-action-procedure)
   'ok)
-;|#
 
 
 (define (logical-or x y)
@@ -23,9 +25,9 @@
         (else 0)))
 
 
-;; tests
-(newline)
 
+
+;; tests
 (display "(logical-or 0 0) = ")
 (logical-or 0 0)
 
@@ -37,8 +39,3 @@
 
 (display "(logical-or 1 1) = ")
 (logical-or 1 1)
-
-
-
-
-(newline)

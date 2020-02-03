@@ -1,6 +1,8 @@
-#lang racket
+#lang sicp
+(#%require (file "circuit/wires.rkt"))
+(#%require (file "circuit/primitive-function-boxes.rkt"))
 
-;; REVISIT -- import/implement primitives and test
+;; REVISIT -- test
 
 (define (ripple-carry-adder As Bs Ss C)
   (define (iter As Bs Ss C)
@@ -75,3 +77,4 @@ or equivalently:
                  and-gate-delay))))
    and-gate-delay
    or-gate-delay)
+;|#

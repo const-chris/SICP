@@ -1,6 +1,6 @@
-#lang racket
-(require "utils/square.rkt")
-(require "constraints.rkt")
+#lang sicp
+(#%require (file "utils/square.rkt"))
+(#%require (file "constraints.rkt"))
 
 ;; Ben's squarer
 (define (squarer a b)

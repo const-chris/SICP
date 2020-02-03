@@ -1,4 +1,5 @@
-#lang racket
+#lang sicp
+
 (define (cons x y)
   (define (set-x! v) (set! x v))
   (define (set-y! v) (set! y v))

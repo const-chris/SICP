@@ -1,14 +1,11 @@
-#lang racket
-(require "constraints.rkt")
+#lang sicp
+(#%require (file "constraints.rkt"))
 
 ;; Louis's squarer
 (define (squarer a b)
   (multiplier a a b))
 
-#|
-The problem with this idea is that multiplier is not equipped to contrain its multiplicands
-as square roots of the product. Setting b will not determine a.
-|#
+;; The problem with this idea is that multiplier is not equipped to contrain its multiplicands as square roots of the product. Setting b will not determine a.
 
 ;#| test
 (define a (make-connector))

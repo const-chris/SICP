@@ -1,5 +1,5 @@
-#lang racket
-(require "constraints.rkt")
+#lang sicp
+(#%require (file "constraints.rkt"))
 
 (define (c+ x y)
   (let ((z (make-connector)))

@@ -1,5 +1,5 @@
-#lang racket
-"
+#lang sicp
+#|
 Recursive version:
 
                     parameters: n
@@ -44,14 +44,14 @@ Iterative version:
                                                                                      (fact-iter (* counter product)
                     parameters: n                                                               (+ counter 1)
                     body: (fact-iter 1 1 n)                                                     max-count)))
-                         ^                                                      ^                                                                
+                         ^                                                      ^
                          ║                                                      ║
                          ║                                                      ║
                        ╔═╩═╦═══╗                                              ╔═╩═╦═══╗
                        ║ o ║ o ╠═══╗                                          ║ o ║ o ╠═══╗
                        ╚═══╩═══╝   ║                                          ╚═══╩═══╝   ║
                            ^       ║                                              ^       ║
-                           ║       ║                                              ║       ║                  
+                           ║       ║                                              ║       ║
                            ║       ║                                              ║       ║
                            ║       v                                              ║       v
                ╔═══════════╩══════════════════════════════════════════════════════╩═════════════════════════════════════════════════════════════════╗
@@ -72,4 +72,4 @@ global env ═══>║       factorial                                        
                                                              (+ counter 1)
                                                              max-count)))
 
-"
+|#

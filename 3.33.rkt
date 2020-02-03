@@ -1,5 +1,5 @@
-#lang racket
-(require "constraints.rkt")
+#lang sicp
+(#%require (file "constraints.rkt"))
 
 (define (averager x y avg)
   (let ((u (make-connector))
@@ -15,6 +15,8 @@
     'ok))
 
 
+
+
 ;#| test
 (define x (make-connector))
 (define y (make-connector))
@@ -27,6 +29,4 @@
 
 (forget-value! x 'user)
 (set-value! avg 21 'user)
-
-(newline)
 ;|#

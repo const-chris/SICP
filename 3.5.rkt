@@ -1,8 +1,9 @@
-#lang racket
-(require "utils/square.rkt")
+#lang sicp
+(#%require (file "utils/square.rkt"))
 
 (define (random-in-range low high)
-  (+ low (* (- high low) (random))))
+  (let ((range (- high low)))
+    (+ low (random range))))
 
 (define (monte-carlo trials experiment)
   (define (iter trials-remaining trials-passed)
@@ -10,7 +11,7 @@
           ((experiment) (iter (- trials-remaining 1) (+ trials-passed 1)))
           (else (iter (- trials-remaining 1) trials-passed))))
   (iter trials 0))
-    
+
 
 (define (estimate-integral pred x1 x2 y1 y2 trials)
   (define (experiment)
@@ -22,7 +23,7 @@
 (define (estimate-pi trials)
   (define (in-unit-circle? x y)
     (<= (+ (square x) (square y)) 1))
-  (estimate-integral in-unit-circle? -1 1 -1 1 trials))
+  (estimate-integral in-unit-circle? -1.0 1.0 -1.0 1.0 trials))
 
 
 

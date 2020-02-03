@@ -1,4 +1,4 @@
-#lang racket
+#lang sicp
 ;; REVISIT -- test with implementations of make-serializer and parallel-execute
 
 ;; Original version

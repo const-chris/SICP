@@ -1,4 +1,4 @@
-#lang racket
+#lang sicp
 
 ;; from ex. 3.3
 (define (make-account balance password)
@@ -31,7 +31,7 @@
         (cond ((not (eq? p new-password)) (account "" '_))
               ((eq? m 'withdraw) (account password 'withdraw))
               ((eq? m 'deposit) (account password 'deposit))
-              (else (λ (_)
+              (else (lambda (_)
                       (string-append "Unknown request: "
                                      (symbol->string m))))))
       (error "Incorrect password -- MAKE-JOINT" password)))
