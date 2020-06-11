@@ -1,5 +1,5 @@
-#lang racket
-(provide any)
+#lang sicp
+(#%provide any)
 
 (define (any predicate items)
   (cond ((null? items) false)
