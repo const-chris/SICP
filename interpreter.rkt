@@ -21,9 +21,6 @@
         (else
          (error "Unknown expression type: EVAL" exp))))
 
-;; this doesn't work, maybe just in racket? so replacing apply with our-apply
-;; (define apply-in-underlying-scheme apply)
-
 (define (apply procedure arguments)
   (cond ((primitive-procedure? procedure)
          (apply-primitive-procedure procedure arguments))

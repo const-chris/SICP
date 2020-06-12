@@ -1,6 +1,6 @@
 #lang sicp
-(#%require "utils/apply-in-underlying-scheme.rkt")
-(#%require "evaluator.rkt")
+(#%require (file "utils/apply-in-underlying-scheme.rkt"))
+(#%require (file "interpreter.rkt"))
 
 ;; Installing map as a primitive fails because it is a higher-order function,
 ;; and apply-primitive-procedure is not designed to handle procedures as arguments.
