@@ -1,10 +1,7 @@
 #lang sicp
-;; REVISIT -- test with complete evaluator?
+(#%require (file "./interpreter.rkt"))
 
-(define no-operands? null?)
-(define first-operand car)
-(define rest-operands cdr)
-
+(define list-of-values '*one-of-the-following*)
 
 ;; left-to-right evaluation
 (define (ltr-list-of-values exps env)
@@ -14,7 +11,6 @@
         (cons first
               (ltr-list-of-values (rest-operands exps) env)))))
 
-
 ;; right-to-left evaluation
 (define (rtl-list-of-values exps env)
   (if (no-operands? exps)
@@ -23,57 +19,88 @@
         (cons (eval (first-operand exps) env)
               rest))))
 
+;; ------------------------ unchanged ------------------------
+(define (eval exp env)
+  (cond ((self-evaluating? exp) exp)
+        ((variable? exp) (lookup-variable-value exp env))
+        ((quoted? exp) (text-of-quotation exp))
+        ((assignment? exp) (eval-assignment exp env))
+        ((definition? exp) (eval-definition exp env))
+        ((if? exp) (eval-if exp env))
+        ((lambda? exp) (make-procedure (lambda-parameters exp)
+                                       (lambda-body exp)
+                                       env))
+        ((begin? exp)
+         (eval-sequence (begin-actions exp) env))
+        ((cond? exp) (eval (cond->if exp) env))
+        ((application? exp)
+         (apply (eval (operator exp) env)
+                (list-of-values (operands exp) env)))
+        (else
+          (error "Unknown expression type: EVAL" exp))))
 
+(define (apply procedure arguments)
+  (cond ((primitive-procedure? procedure)
+         (apply-primitive-procedure procedure arguments))
+        ((compound-procedure? procedure)
+         (eval-sequence
+           (procedure-body procedure)
+           (extend-environment
+             (procedure-parameters procedure)
+             arguments
+             (procedure-environment procedure))))
+        (else
+          (error
+            "Unknown procedure type: APPLY" procedure))))
 
+(define (eval-if exp env)
+  (if (true? (eval (if-predicate exp) env))
+      (eval (if-consequent exp) env)
+      (eval (if-alternative exp) env)))
 
+(define (eval-sequence exps env)
+  (cond ((last-exp? exps)
+         (eval (first-exp exps) env))
+        (else
+          (eval (first-exp exps) env)
+          (eval-sequence (rest-exps exps) env))))
 
-;; Proof of concept ... for applications:
-(define x 0)
+(define (eval-assignment exp env)
+  (set-variable-value! (assignment-variable exp)
+                       (eval (assignment-value exp) env)
+                       env)
+  'ok)
 
-(define (rtl exps)
-  (if (no-operands? exps)
-      '()
-      (let ((rest (rtl (rest-operands exps))))
-        (cons ((first-operand exps)) ;; apply the expr -- must be a procedure
-              rest))))
+(define (eval-definition exp env)
+  (define-variable! (definition-variable exp)
+                    (eval (definition-value exp) env)
+                    env)
+  'ok)
 
-(rtl (list
-      (lambda ()
-        (set! x (* x 2))
-        1)
-      (lambda ()
-        (set! x (+ x 1))
-        2)))
+;; -------------------------- tests --------------------------
+(display "(define exp '((lambda ()
+                (define x 0)
+                (define (y)
+                  (set! x 1)
+                  1)
+                (+ (y) x))))")
 
-x
+(define exp '((lambda ()
+                (define x 0)
+                (define (y)
+                  (set! x 1)
+                  1)
+                (+ (y) x))))
 
-;; It's difficult to test for evaluation since scheme eagerly evaluates the list 'exps' when the list-of-values
-;; procedure is called.
+(newline)
+(newline)
 
-;; Proof that it doesn't work for evaluation:
-(define y 0)
+(set! list-of-values ltr-list-of-values)
+(display "Under left-to-right evaluation, (eval exp the-global-environment) = ")
+(eval exp the-global-environment)
 
-(define (rtl2 exps)
-  (display y)
-  (newline)
-  (if (no-operands? exps)
-      '()
-      (let ((rest (rtl2 (rest-operands exps))))
-        (cons (first-operand exps)
-              rest))))
+(set! list-of-values rtl-list-of-values)
+(display "Under right-to-left evaluation, (eval exp the-global-environment) = ")
+(eval exp the-global-environment)
+;|#
 
-(rtl2 (list
-       (begin
-         (display "I happen first, no matter what")
-         (newline)
-         (set! y (* y 2))
-         1)
-       (begin
-         (set! y (+ y 1))
-         2)))
-
-y
-
-;; This clearly cannot work when the list-of-expressions procedure is applied in Scheme.
-;; In order for the procedure body to affect the evaluation order, the implementation language must be lazy
-;; (normal order evaluation)
