@@ -1,8 +1,8 @@
 #lang sicp
 (#%require (file "./data-directed-table.rkt"))
-(#%require (file "./interpreter.rkt"))
+(#%require (file "./evaluator.rkt"))
 (#%provide (all-from (file "./data-directed-table.rkt"))
-           (all-from (file "./interpreter.rkt"))
+           (all-from (file "./evaluator.rkt"))
            (all-defined))
 
 ;; -------------------- new eval --------------------

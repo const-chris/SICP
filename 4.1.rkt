@@ -1,5 +1,5 @@
 #lang sicp
-(#%require (file "./interpreter.rkt"))
+(#%require (file "./evaluator.rkt"))
 
 (define list-of-values '*one-of-the-following*)
 
