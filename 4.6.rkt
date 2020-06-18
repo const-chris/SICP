@@ -12,7 +12,7 @@
   (define (let-vars exp) (map car (let-declarations exp)))
   (define (let-vals exp) (map cadr (let-declarations exp)))
   (define (let-declarations exp) (cadr exp))
-  (define (let-body exp) (cddr exp))  
+  (define (let-body exp) (cddr exp))
   (put 'eval 'let (lambda (exp env) (eval (let->combination exp) env))))
 
 (install-let-package)
@@ -32,6 +32,6 @@
 (define exp '(let ((x 2)) x))
 (define eval-let (get 'eval 'let))
 
-(eval-let exp the-global-environment) 
+(eval-let exp the-global-environment)
 ;|#
- 
+
