@@ -2,6 +2,16 @@
 (#%require "utils/apply-in-underlying-scheme.rkt")
 (#%provide (all-defined))
 
+;; testing utility
+(define (run program)
+  (let ((start-time (runtime)))
+      (eval-sequence program the-global-environment)
+      (- (runtime) start-time)))
+
+
+
+
+
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
@@ -250,9 +260,8 @@
         (list '- -)
         (list '* *)
         (list '/ /)
-        (list '= =)
+        (list '= =)))
         ;; ⟨more primitives⟩
-        ))
 
 (define (primitive-procedure-names)
   (map car primitive-procedures))

@@ -1,30 +1,35 @@
 #lang sicp
-(#%require (file "./evaluator.rkt"))
-(#%provide (all-from (file "./evaluator.rkt"))
-           (all-defined))
+(#%require (file "./evaluator-2.rkt"))
 
-;; testing utility
-(define (run-2 program)
-  (let ((start-time (runtime)))
-      ((analyze-sequence program) the-global-environment)
-      (- (runtime) start-time)))
+;; helpers for let package
+(define (let? exp) (tagged-list? exp 'let))
 
+(define (let->combination exp)
+  (cons (make-lambda (let-vars exp) (let-body exp))
+        (let-vals exp)))
 
+(define (let-vars exp) (map car (let-declarations exp)))
+(define (let-vals exp) (map cadr (let-declarations exp)))
+(define (let-declarations exp) (cadr exp))
+(define (let-body exp) (cddr exp))
 
-(define (eval exp env) ((analyze exp) env))
-
+;; add let clause to analyze
 (define (analyze exp)
   (cond ((self-evaluating? exp) (analyze-self-evaluating exp))
         ((quoted? exp) (analyze-quoted exp))
         ((variable? exp) (analyze-variable exp))
         ((assignment? exp) (analyze-assignment exp))
         ((definition? exp) (analyze-definition exp))
+        ((let? exp) (analyze (let->combination exp)))
         ((if? exp) (analyze-if exp))
         ((lambda? exp) (analyze-lambda exp))
         ((begin? exp) (analyze-sequence (begin-actions exp)))
         ((cond? exp) (analyze (cond->if exp)))
         ((application? exp) (analyze-application exp))
         (else (error "Unknown expression type: ANALYZE" exp))))
+
+;; -------------------- unchanged --------------------
+(define (eval exp env) ((analyze exp) env))
 
 (define (analyze-self-evaluating exp)
   (lambda (env) exp))
@@ -80,9 +85,9 @@
         (aprocs (map analyze (operands exp))))
     (lambda (env)
       (execute-application
-       (fproc env)
-       (map (lambda (aproc) (aproc env))
-            aprocs)))))
+        (fproc env)
+        (map (lambda (aproc) (aproc env))
+             aprocs)))))
 
 (define (execute-application proc args)
   (cond ((primitive-procedure? proc)
@@ -90,57 +95,13 @@
         ((compound-procedure? proc)
          ((procedure-body proc)
           (extend-environment
-           (procedure-parameters proc)
-           args
-           (procedure-environment proc))))
+            (procedure-parameters proc)
+            args
+            (procedure-environment proc))))
         (else
-         (error "Unknown procedure type: EXECUTE-APPLICATION"
-                proc))))
+          (error "Unknown procedure type: EXECUTE-APPLICATION"
+                 proc))))
 
-;; -------------------- unchanged --------------------
-(define (apply procedure arguments)
-  (cond ((primitive-procedure? procedure)
-         (apply-primitive-procedure procedure arguments))
-        ((compound-procedure? procedure)
-         (eval-sequence
-          (procedure-body procedure)
-          (extend-environment
-           (procedure-parameters procedure)
-           arguments
-           (procedure-environment procedure))))
-        (else
-         (error
-          "Unknown procedure type: APPLY" procedure))))
-
-(define (list-of-values exps env)
-  (if (no-operands? exps)
-      '()
-      (cons (eval (first-operand exps) env)
-            (list-of-values (rest-operands exps) env))))
-
-(define (eval-if exp env)
-  (if (true? (eval (if-predicate exp) env))
-      (eval (if-consequent exp) env)
-      (eval (if-alternative exp) env)))
-
-(define (eval-sequence exps env)
-  (cond ((last-exp? exps)
-         (eval (first-exp exps) env))
-        (else
-         (eval (first-exp exps) env)
-         (eval-sequence (rest-exps exps) env))))
-
-(define (eval-assignment exp env)
-  (set-variable-value! (assignment-variable exp)
-                       (eval (assignment-value exp) env)
-                       env)
-  'ok)
-
-(define (eval-definition exp env)
-  (define-variable! (definition-variable exp)
-    (eval (definition-value exp) env)
-    env)
-  'ok)
 (define (driver-loop)
   (prompt-for-input input-prompt)
   (let ((input (read)))
@@ -148,4 +109,5 @@
       (announce-output output-prompt)
       (user-print output)))
   (driver-loop))
+
 
