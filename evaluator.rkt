@@ -253,14 +253,26 @@
 
 (define primitive-procedures
   (list (list 'car car)
+        (list 'caar caar)
+        (list 'cadr cadr)
         (list 'cdr cdr)
+        (list 'cddr cddr)
         (list 'cons cons)
+        (list 'list list)
         (list 'null? null?)
         (list '+ +)
         (list '- -)
         (list '* *)
         (list '/ /)
-        (list '= =)))
+        (list '= =)
+        (list 'eq? eq?)
+        (list 'apply apply)
+        (list '> >)
+        (list '< <)
+        (list '>= >=)
+        (list '<= <=)
+        (list 'newline newline)
+        (list 'display display)))
         ;; ⟨more primitives⟩
 
 (define (primitive-procedure-names)
