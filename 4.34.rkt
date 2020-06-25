@@ -20,25 +20,41 @@ There are two ways I can imagine to print a lazy-list:
     (let ((output (actual-value input the-global-environment)))
       (announce-output output-prompt)
       (if (lazy-list? output)
-          (user-print-list-literal input)
+          (user-print-list output)
           (user-print output))))
   (driver-loop))
 
 ;#| 1)
-(define (user-print-list-literal object)
-  (display "(")
+(define (exe expr) (actual-value expr the-global-environment))
+
+(define (lift op object)
+  (let ((procedure (actual-value op the-global-environment)))
+    (cond ((primitive-procedure? procedure)
+           (apply-primitive-procedure procedure (list object)))
+          ((compound-procedure? procedure)
+           (eval-sequence
+             (procedure-body procedure)
+             (extend-environment
+               (procedure-parameters procedure)
+               (list object)
+               (procedure-environment procedure))))
+          (else (error "Unknown procedure type: APPLY"
+                       procedure)))))
+
+(define (user-print-list object)
   (define (print-iter xs)
-    (if (not (actual-value `(pair? ,xs) the-global-environment))
-        (display (actual-value xs the-global-environment))
-        (let ((next (list 'car xs)))
-          (display (actual-value next the-global-environment))
+    (if (not (lift 'pair? xs))
+        (display xs)
+        (begin
+          (display (force-it (lift 'car xs)))
           (display " ")
-          (print-iter (list 'cdr xs)))))
+          (print-iter (force-it (lift 'cdr xs))))))
+  (display "(")
   (print-iter object)
   (display ")"))
 ;|#
 
 #| 2)
-(define (user-print-list-literal object)
+(define (user-print-list object)
   (display "<lazy-list>"))
 ;|#
