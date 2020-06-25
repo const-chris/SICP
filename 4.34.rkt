@@ -32,25 +32,25 @@ There are two ways I can imagine to print a lazy-list:
     (cond ((primitive-procedure? procedure)
            (apply-primitive-procedure procedure (list object)))
           ((compound-procedure? procedure)
-           (eval-sequence
-             (procedure-body procedure)
-             (extend-environment
-               (procedure-parameters procedure)
-               (list object)
-               (procedure-environment procedure))))
-          (else (error "Unknown procedure type: APPLY"
-                       procedure)))))
+           (eval-sequence (procedure-body procedure)
+                          (extend-environment (procedure-parameters procedure)
+                                              (list object)
+                                              (procedure-environment procedure))))
+          (else (error "Unknown procedure type: LIFT" procedure)))))
 
 (define (user-print-list object)
-  (define (print-iter xs)
+  (define (print-iter xs maybe-leading-space)
     (if (not (lift 'pair? xs))
-        (display xs)
+        (if (not (lift 'null? xs))
+            (begin
+              (display " . ")
+              (display xs)))
         (begin
+          (display maybe-leading-space)
           (display (force-it (lift 'car xs)))
-          (display " ")
-          (print-iter (force-it (lift 'cdr xs))))))
+          (print-iter (force-it (lift 'cdr xs)) " "))))
   (display "(")
-  (print-iter object)
+  (print-iter object "")
   (display ")"))
 ;|#
 
