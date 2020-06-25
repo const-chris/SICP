@@ -260,6 +260,7 @@
         (list 'cons cons)
         (list 'list list)
         (list 'null? null?)
+        (list 'pair? pair?)
         (list '+ +)
         (list '- -)
         (list '* *)
