@@ -1,5 +1,7 @@
 #lang sicp
 (#%require (file "./evaluator-2.rkt"))
+(#%provide (all-from (file "./evaluator-2.rkt"))
+           (all-defined))
 
 ;; helpers for let package
 (define (let? exp) (tagged-list? exp 'let))
