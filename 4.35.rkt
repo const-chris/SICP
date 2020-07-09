@@ -1,6 +1,6 @@
 #lang sicp
-(#%require (file "./amb-evaluator.rkt"))
-(#%provide (all-from (file "./amb-evaluator.rkt"))
+(#%require (file "./data-directed-amb-evaluator.rkt"))
+(#%provide (all-from (file "./data-directed-amb-evaluator.rkt"))
            (all-defined))
 
 (define (require p) (if (not p) (amb)))
