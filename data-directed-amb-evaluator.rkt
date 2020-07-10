@@ -1,9 +1,7 @@
 #lang sicp
 (#%require (file "./data-directed-table.rkt"))
-#| (#%require (file "./amb-evaluator.rkt")) |#
 (#%require (file "./4.22.rkt"))
 (#%provide (all-from (file "./data-directed-table.rkt"))
-           #| (all-from (file "./amb-evaluator.rkt")) |#
            (all-from (file "./4.22.rkt"))
            (all-defined))
 
