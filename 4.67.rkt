@@ -1,10 +1,56 @@
 #lang sicp
+(#%require (file "./microshaft-db.rkt"))
+(#%require (file "./4.68.rkt"))
 (#%require (file "./stream-utils.rkt"))
 (#%require (file "./data-directed-table.rkt"))
 (#%require (file "./utils/eval-in-underlying-scheme.rkt"))
 (#%provide (all-from (file "./data-directed-table.rkt"))
            (all-defined))
 
+#|
+The general idea behind the simple loop detector is to maintain a data structure we'll call history containing all the queries currently being processed.
+Each time a new query is scheduled to be evaluated, it is first instantiated as far as possible in the current frame (bound variables are replaced with their values), and this form is checked against the queries in the history. If it already exists, instead of processing the query, we filter out the current frame.
+This has the effect that if no current frame in the frame-stream contains new bindings for a query that has been seen before, the empty stream is returned.
+
+We'll use a list as our history data structure, and it will contain all the query patterns that have been seen but not fully instantiated.
+When a pattern is fully instantiated (when its results are returned), we remove it from the list.
+
+Queries are stored in history with all bound variables instantiated and all unbound variables converted to the token '*unbound-variable*.
+This prevents premature stopping when a query is revisited with additional (or different) variables bound, and it also prevents unnecessary looping when a query
+is revisited with the same variables bound but unbound variables having different names.
+|#
+
+;; HISTORY
+(define HISTORY '())
+
+(define (print-history)
+  (define (print-loop history)
+    (newline)
+    (if (not (null? history))
+        (begin
+          (display (car history))
+          (print-loop (cdr history)))))
+  (newline)
+  (display "HISTORY:")
+  (print-loop HISTORY))
+
+(define (clear-history!)
+  (set! HISTORY '()))
+
+(define (add-to-history! expr)
+  (if (equal? expr '(always-true))
+      (clear-history!)  ;; can we clear-history! here, or should we just ignore (always-true)?
+      (set! HISTORY (cons expr HISTORY))))
+
+(define (not-in-history? expr)
+  (not (member expr HISTORY)))
+
+(define (query->history-entry query frame)
+  (instantiate query
+               frame
+               (lambda (v f) '*unbound-variable*)))
+
+;; added loop detector
 (define (run-query query)
   (let ((q (query-syntax-process query)))
     (cond ((assertion-to-be-added? q)
@@ -22,14 +68,8 @@
                     frame
                     (lambda (v f)
                       (contract-question-mark v))))
-                (qeval q (singleton-stream '()))))))))
-
-;; 4.4.4.1 The Driver Loop and Instantiation
-(define input-prompt ";;; Query input:")
-(define output-prompt ";;; Query results:")
-
-(define (prompt-for-input string)
-  (newline) (newline) (display string) (newline))
+                (qeval q (singleton-stream '()))))
+            (clear-history!)))))                                         ;; added
 
 (define (query-driver-loop)
   (prompt-for-input input-prompt)
@@ -51,7 +91,24 @@
                     (lambda (v f)
                       (contract-question-mark v))))
                 (qeval q (singleton-stream '()))))
+            (clear-history!)                                             ;; added
             (query-driver-loop)))))
+
+(define (qeval query frame-stream)
+  #| (print-history) |#
+  (let ((frame-stream (stream-filter (lambda (frame) (not-in-history? (query->history-entry query frame))) frame-stream)))  ;; added
+    (stream-for-each (lambda (frame) (add-to-history! (query->history-entry query frame))) frame-stream)                    ;; added
+    (let ((qproc (get (type query) 'qeval)))
+      (if qproc
+          (qproc (contents query) frame-stream)
+          (simple-query query frame-stream)))))
+
+;; 4.4.4.1 The Driver Loop and Instantiation
+(define input-prompt ";;; Query input:")
+(define output-prompt ";;; Query results:")
+
+(define (prompt-for-input string)
+  (newline) (newline) (display string) (newline))
 
 (define (instantiate exp frame unbound-var-handler)
   (define (copy exp)
@@ -66,12 +123,6 @@
   (copy exp))
 
 ;; 4.4.4.2 The Evaluator
-(define (qeval query frame-stream)
-  (let ((qproc (get (type query) 'qeval)))
-    (if qproc
-        (qproc (contents query) frame-stream)
-        (simple-query query frame-stream))))
-
 (define (simple-query query-pattern frame-stream)
   (stream-flatmap
     (lambda (frame)
@@ -85,6 +136,7 @@
       frame-stream
       (conjoin (rest-conjuncts conjuncts)
                (qeval (first-conjunct conjuncts) frame-stream))))
+(put 'and 'qeval conjoin)
 
 (define (disjoin disjuncts frame-stream)
   (if (empty-disjunction? disjuncts)
@@ -92,6 +144,7 @@
       (interleave-delayed
         (qeval (first-disjunct disjuncts) frame-stream)
         (delay (disjoin (rest-disjuncts disjuncts) frame-stream)))))
+(put 'or 'qeval disjoin)
 
 (define (negate operands frame-stream)
   (stream-flatmap
@@ -102,6 +155,7 @@
           (singleton-stream frame)
           the-empty-stream))
     frame-stream))
+(put 'not 'qeval negate)
 
 (define (lisp-value call frame-stream)
   (stream-flatmap
@@ -115,23 +169,14 @@
           (singleton-stream frame)
           the-empty-stream))
     frame-stream))
+(put 'lisp-value 'qeval lisp-value)
 
 (define (execute exp)
-  (apply (eval (predicate exp) user-initial-environment
-                              (args exp))))
+  (apply (eval (predicate exp) user-initial-environment)
+         (args exp)))
 
 (define (always-true ignore frame-stream) frame-stream)
-
-;; cleaning up output
-(define (install-qproc-package)
-  (display "installing logic-evaluator qprocs... ")
-  (put 'and 'qeval conjoin)
-  (put 'or 'qeval disjoin)
-  (put 'not 'qeval negate)
-  (put 'lisp-value 'qeval lisp-value)
-  (put 'always-true 'qeval always-true))
-
-(install-qproc-package)
+(put 'always-true 'qeval always-true)
 
 ;; 4.4.4.3 Finding Assertions by Pattern Matching
 (define (find-assertions pattern frame)
@@ -435,3 +480,24 @@
 
 (define (extend variable value frame)
   (cons (make-binding variable value) frame))
+
+
+
+;#| tests
+(run-query '(assert! (married Minnie Mickey)))
+
+(run-query '(assert! (rule (married ?x ?y) (married ?y ?x))))
+
+(run-query
+  '(assert! (rule (outranked-by ?staff-person ?boss)
+                (or (supervisor ?staff-person ?boss)
+                    (and (outranked-by ?middle-manager ?boss)
+                         (supervisor ?staff-person ?middle-manager))))))
+
+(run-query
+  '(assert! (rule (reverse ?a (?u . ?v))
+                  (and (append-to-form ?b (?u) ?a)
+                       (reverse ?b ?v)))))
+
+(query-driver-loop)
+;|#

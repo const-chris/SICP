@@ -36,11 +36,17 @@
         (apply stream-map
                (cons proc (map stream-cdr argstreams))))))
 
+#| (define (stream-for-each proc s) |#
+#|   (if (stream-null? s) |#
+#|       'done |#
+#|       (begin (proc (stream-car s)) |#
+#|              (stream-for-each proc (stream-cdr s))))) |#
+
 (define (stream-for-each proc s)
-  (if (stream-null? s)
-      'done
+  (if (not (stream-null? s))
       (begin (proc (stream-car s))
              (stream-for-each proc (stream-cdr s)))))
+
 
 (define (stream-enumerate-interval low high)
   (if (> low high)
@@ -81,3 +87,9 @@
       s2
       (cons-stream (stream-car s1)
                    (stream-append (stream-cdr s1) s2))))
+
+(define (stream-accumulate op zero stream)
+  (if (stream-null? stream)
+      zero
+      (op (stream-car stream)
+          (stream-accumulate op zero (stream-cdr stream)))))
