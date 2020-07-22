@@ -1,7 +1,6 @@
 #lang sicp
 (#%require (file "./microshaft-db.rkt"))
 (#%require (file "./4.68.rkt"))
-(#%require (file "./stream-utils.rkt"))
 (#%require (file "./data-directed-table.rkt"))
 (#%require (file "./utils/eval-in-underlying-scheme.rkt"))
 (#%provide (all-from (file "./data-directed-table.rkt"))

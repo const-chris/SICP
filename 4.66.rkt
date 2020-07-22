@@ -1,5 +1,4 @@
 #lang sicp
-(#%require (file "./stream-utils.rkt"))
 (#%require (file "./microshaft-db.rkt"))
 (#%require (file "./4.65.rkt"))
 

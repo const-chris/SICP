@@ -2,7 +2,8 @@
 (#%require (file "./stream-utils.rkt"))
 (#%require (file "./data-directed-table.rkt"))
 (#%require (file "./utils/eval-in-underlying-scheme.rkt"))
-(#%provide (all-from (file "./data-directed-table.rkt"))
+(#%provide (all-from (file "./stream-utils.rkt"))
+           (all-from (file "./data-directed-table.rkt"))
            (all-defined))
 
 (define (run-query query)

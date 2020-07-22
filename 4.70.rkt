@@ -1,6 +1,5 @@
 #lang sicp
-(#%require (file "./stream-utils.rkt"))
-#| (#%require (file "./logic-evaluator.rkt")) |#
+(#%require (file "./logic-evaluator.rkt"))
 
 #|
 The purpose of the let statements in add-assertion! and add-rule! is to provide a new name by which to refer to a stream whose original name we want to set! to.
