@@ -1,6 +1,7 @@
 #lang sicp
 (#%require (file "./4.39.rkt"))
-#| (#%provide (all-defined)) |#
+(#%provide (all-from (file "./4.39.rkt"))
+           (all-defined))
 
 (define (install-amb-analyze-permanent-set!-package)
   (display "installing amb-analyze-permanent-set!-package... ")
